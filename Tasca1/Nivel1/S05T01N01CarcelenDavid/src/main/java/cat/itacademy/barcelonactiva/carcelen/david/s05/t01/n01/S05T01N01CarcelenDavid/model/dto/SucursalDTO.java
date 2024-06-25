@@ -8,7 +8,10 @@ import java.util.Arrays;
 import java.util.List;
 @Data
 public class SucursalDTO implements Serializable {
-    private String sucursalType;
+    private int id;
+    private String name;
+    private String country;
+    private String sucursalType;//ue o foraUe
     private final List<String> euCountries = new ArrayList<>(Arrays.asList("Portugal","Spain","France","Austria","Germany","Italy","Greece", "Belgium", "Bulgaria", "Croatia", "Republic of Cyprus", "Czech Republic", "Denmark", "Estonia", "Finland", "Hungary", "Ireland", "Latvia", "Lithuania", "Luxembourg", "Malta", "Netherlands", "Poland", "Romania", "Slovakia", "Slovenia", "Sweden"));
 
 }
