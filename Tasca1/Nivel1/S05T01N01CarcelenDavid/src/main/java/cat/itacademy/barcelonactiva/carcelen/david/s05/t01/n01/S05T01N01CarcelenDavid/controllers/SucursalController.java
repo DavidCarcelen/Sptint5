@@ -14,42 +14,38 @@ public class SucursalController {
     @Autowired
     private SucursalServiceImpl sucursalService;
 
+    @GetMapping("/")
+    public String index (){
+        return "home";
+    }
+
     @PostMapping("/add")
     public ResponseEntity<String> addSucursal(@RequestBody Sucursal sucursal) {
         sucursalService.addSucursal(sucursal);
         return ResponseEntity.ok("Sucursal added");
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<String> updateSucursal(@RequestBody Sucursal sucursal){
         sucursalService.updateSucursal(sucursal);
         return ResponseEntity.ok("Sucursal updated");
     }
 
-    @PostMapping("/delete")
-    public ResponseEntity<String> deleteSucursal(@RequestBody Sucursal sucursal){
-        sucursalService.deleteSucursal(sucursal.getIdSucursal());
-        return ResponseEntity.ok("Sucursal with deleted");
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteSucursal(@PathVariable int id){
+        sucursalService.deleteSucursal(id);
+        return ResponseEntity.ok("Sucursal " + id + " deleted");
     }
 
-    @PostMapping("/getOne/{id}")
+    @GetMapping("/getOne/{id}")
     public ResponseEntity<Sucursal> getOneSucursal(@PathVariable int id){
         Sucursal sucursal = sucursalService.getOneSucursal(id);
         return ResponseEntity.ok().body(sucursal);
     }
 
-    @PostMapping("/getAll/")
+    @GetMapping("/getAll/")
     public ResponseEntity<List<Sucursal>> getAll(){
         List <Sucursal> list = sucursalService.getAllSucursal();
         return ResponseEntity.ok(list);
     }
-    //http://localhost:9000/sucursal/add
-    //
-    //http://localhost:9000/sucursal/update
-    //
-    //http://localhost:9000/sucursal/delete/{id}
-    //
-    //http://localhost:9000/sucursal/getOne/{id}
-    //
-    //http://localhost:9000/sucursal/getAll
 }
