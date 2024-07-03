@@ -9,11 +9,11 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class ExceptionsHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(SucursalNotFoundException.class)
-    public ResponseEntity<String> FruitNotFoundException(SucursalNotFoundException e, WebRequest request) {
+    @ExceptionHandler(BranchNotFoundException.class)
+    public ResponseEntity<String> handleBranchNotFoundException(BranchNotFoundException e, WebRequest request) {
         String message = e.getMessage() + " " + request.getDescription(false);
 
-        return new ResponseEntity<String>(message, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
     }
 
 }
