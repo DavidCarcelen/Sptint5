@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Edit Branch</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+    <div>
+        <h2>Update Branch</h2>
+        <form  action="#" th:action="@{/branches/update}" th:object="${branchToUpdate}" method="POST">
+            <input type="hidden" th:field="*{id}"/>
+            <div class="form-group">
+                <label for="name">Branch Name</label>
+                <input type="text" class="form-control" id="name" name="name" th:field="*{name}" required>
+            </div>
+            <div class="form-group">
+                <label for="country">Branch Country</label>
+                <input type="text" class="form-control" id="country" name="country" th:field="*{country}" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Update Branch</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

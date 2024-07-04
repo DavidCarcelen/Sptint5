@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="ISO-8859-1">
-    <title>Sucursales Index</title>
+    <title>Branches Index</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
@@ -12,26 +12,28 @@
 <body>
 
 <div class="container my-2">
-    <h1>Sucursales</h1>
+    <h1>Branches</h1>
 
-    <a th:href="@{/showNewEmployeeForm}" class="btn btn-primary btn-sm mb-3"> Add Employee </a>
+    <a th:href="@{/branches/addBranchForm}" class="btn btn-primary btn-sm mb-3"> Add Branch </a>
 
     <table border="1" class="table table-striped table-responsive-md">
         <thead>
         <tr>
-            <th>Sucursal ID</th>
-            <th>Sucursal Name</th>
-            <th>Sucursal Country</th>
+            <th>Branch ID</th>
+            <th>Branch Name</th>
+            <th>Branch Country</th>
+            <th>Type</th>
             <th> Actions </th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="employee : ${listEmployees}">
-            <td th:text="${employee.firstName}"></td>
-            <td th:text="${employee.lastName}"></td>
-            <td th:text="${employee.email}"></td>
-            <td> <a th:href="@{/showFormForUpdate/{id}(id=${employee.id})}" class="btn btn-primary">Update</a>
-                <a th:href="@{/deleteEmployee/{id}(id=${employee.id})}" class="btn btn-danger">Delete</a>
+        <tr th:each="branch : ${branches}">
+            <td th:text="${branch.id}"></td>
+            <td th:text="${branch.name}"></td>
+            <td th:text="${branch.country}"></td>
+            <td th:text="${branch.type}"></td>
+            <td> <a th:href="@{/branches/update/{id}(id=${branch.id})}" class="btn btn-primary">Update</a>
+                <a th:href="@{/branches/delete/{id}(id=${branch.id})}" class="btn btn-danger">Delete</a>
             </td>
         </tr>
         </tbody>

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,17 +18,30 @@ public class BranchServiceImpl implements BranchService {
     private BranchRepo branchRepo;
     @Override
     public void addBranch(BranchDTO branchDTO) {
-        Branch sucursal = new Branch(branchDTO.getName(),branchDTO.getCountry());
-        branchRepo.save(sucursal);
+        Branch branch = new Branch(branchDTO.getName(),branchDTO.getCountry());
+        branchRepo.save(branch);
     }
 
+    /*@Override
+    public void updateBranch(BranchDTO branchDTO) {
+        if (!branchRepo.existsById(branchDTO.getId())) {
+            throw new BranchNotFoundException("No branch found with id: " + (branchDTO.getId()));
+        }
+        Branch branch = new Branch(branchDTO.getName(),branchDTO.getCountry());
+        branchRepo.save((Branch) branchDTO);
+    }*/
     @Override
     public void updateBranch(BranchDTO branchDTO) {
-        Branch branch = new Branch(branchDTO.getName(),branchDTO.getCountry());
-        if (!branchRepo.existsById(branch.getIdBranch())) {
-            throw new BranchNotFoundException("No branch found with id: " + (branch.getIdBranch()));
+
+        Optional<Branch> optionalBranch = branchRepo.findById(branchDTO.getId());
+        if (optionalBranch.isPresent()) {
+            Branch existingBranch = optionalBranch.get();
+            existingBranch.setName(branchDTO.getName());
+            existingBranch.setCountry(branchDTO.getCountry());
+            branchRepo.save(existingBranch);
+        } else {
+            throw new RuntimeException("No se encontró la sucursal con ID: " + branchDTO.getId());
         }
-        branchRepo.save(branch);
     }
 
     @Override
@@ -41,7 +55,9 @@ public class BranchServiceImpl implements BranchService {
     @Override
     public BranchDTO getOneBranch(int id) {
         Branch branch = branchRepo.findById(id).orElseThrow(()-> new BranchNotFoundException("No branch found with id: " + (id)));
-        return new BranchDTO(branch.getName(),branch.getCountry());
+        BranchDTO branchDTO = new BranchDTO(branch.getName(),branch.getCountry());
+        branchDTO.setId(branch.getIdBranch());
+        return branchDTO;
     }
 
     @Override

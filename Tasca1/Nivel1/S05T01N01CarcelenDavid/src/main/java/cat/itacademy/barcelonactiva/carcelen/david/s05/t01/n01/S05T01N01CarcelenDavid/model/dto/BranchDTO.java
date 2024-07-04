@@ -22,6 +22,6 @@ public class BranchDTO implements Serializable {
     public BranchDTO(String name, String country) {
         this.name = name;
         this.country = country;
-        this.type = euCountries.contains(country.toLowerCase())?"EU":"NOT EU";
+        this.type = euCountries.contains(country) ? "EU" : "NOT EU";
     }
 }
