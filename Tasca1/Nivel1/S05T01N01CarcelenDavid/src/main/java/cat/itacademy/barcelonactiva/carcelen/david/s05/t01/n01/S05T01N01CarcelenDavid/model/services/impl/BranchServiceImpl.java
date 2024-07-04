@@ -21,27 +21,13 @@ public class BranchServiceImpl implements BranchService {
         Branch branch = new Branch(branchDTO.getName(),branchDTO.getCountry());
         branchRepo.save(branch);
     }
-
-    /*@Override
-    public void updateBranch(BranchDTO branchDTO) {
-        if (!branchRepo.existsById(branchDTO.getId())) {
-            throw new BranchNotFoundException("No branch found with id: " + (branchDTO.getId()));
-        }
-        Branch branch = new Branch(branchDTO.getName(),branchDTO.getCountry());
-        branchRepo.save((Branch) branchDTO);
-    }*/
     @Override
     public void updateBranch(BranchDTO branchDTO) {
-
-        Optional<Branch> optionalBranch = branchRepo.findById(branchDTO.getId());
-        if (optionalBranch.isPresent()) {
-            Branch existingBranch = optionalBranch.get();
-            existingBranch.setName(branchDTO.getName());
-            existingBranch.setCountry(branchDTO.getCountry());
-            branchRepo.save(existingBranch);
-        } else {
-            throw new RuntimeException("No se encontró la sucursal con ID: " + branchDTO.getId());
-        }
+        Branch existingBranch = branchRepo.findById(branchDTO.getId())
+                .orElseThrow(() -> new BranchNotFoundException("No branch found with id: " + branchDTO.getId()));
+        existingBranch.setName(branchDTO.getName());
+        existingBranch.setCountry(branchDTO.getCountry());
+        branchRepo.save(existingBranch);
     }
 
     @Override
