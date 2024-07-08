@@ -3,20 +3,20 @@ package cat.itacademy.barcelonactiva.carcelen.david.s05.t01.n02.S05T01N02.contro
 import cat.itacademy.barcelonactiva.carcelen.david.s05.t01.n02.S05T01N02.model.domain.Flower;
 import cat.itacademy.barcelonactiva.carcelen.david.s05.t01.n02.S05T01N02.model.dto.FlowerDTO;
 import cat.itacademy.barcelonactiva.carcelen.david.s05.t01.n02.S05T01N02.model.services.FlowerService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
-@RequestMapping("/flowerss")
+@RestController
+@RequestMapping("/flowers")
 public class FlowerController {
 
     @Autowired
     private FlowerService flowerService;
-
+    @Operation(summary = "Add a list of flowers", description = "Adds a list of flower objects to the database")
     @PostMapping("/add")
     public ResponseEntity<String> addFlower(@RequestBody FlowerDTO flowerDTO) {
         flowerService.addFlower(flowerDTO);

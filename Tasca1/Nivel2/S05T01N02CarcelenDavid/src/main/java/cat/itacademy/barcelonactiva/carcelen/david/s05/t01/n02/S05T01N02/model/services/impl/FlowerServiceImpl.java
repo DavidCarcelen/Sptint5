@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -18,7 +19,7 @@ public class FlowerServiceImpl implements FlowerService {
 
     @Override
     public void addFlower(FlowerDTO flowerDTO) {
-        Flower flower = new Flower(flowerDTO.getName(),flowerDTO.getCountry());
+        Flower flower = new Flower(flowerDTO.getName(), flowerDTO.getCountry());
         flowerRepo.save(flower);
 
     }
@@ -34,16 +35,29 @@ public class FlowerServiceImpl implements FlowerService {
 
     @Override
     public void deleteFlower(int id) {
+        if (!flowerRepo.existsById(id)) {
+            throw new FlowerNotFoundException("No flower found with id: " + (id));
+        }
+        flowerRepo.deleteById(id);
 
     }
 
     @Override
     public FlowerDTO getOneFlower(int id) {
-        return null;
+        Flower flower = flowerRepo.findById(id).orElseThrow(() -> new FlowerNotFoundException("No flower found with id: " + (id)));
+        FlowerDTO flowerDTO = new FlowerDTO(flower.getName(), flower.getCountry());
+        flowerDTO.setId(id);
+        return flowerDTO;
     }
 
     @Override
     public List<FlowerDTO> getAllFlowers() {
-        return null;
+        return flowerRepo.findAll().stream()
+                .map(flower -> {
+                    FlowerDTO flowerDTO = new FlowerDTO(flower.getName(), flower.getCountry());
+                    flowerDTO.setId(flower.getId());
+                    return flowerDTO;
+                })
+                .collect(Collectors.toList());
     }
 }
