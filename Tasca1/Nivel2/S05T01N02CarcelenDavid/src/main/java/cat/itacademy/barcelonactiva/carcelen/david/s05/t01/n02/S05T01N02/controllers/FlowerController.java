@@ -31,20 +31,20 @@ public class FlowerController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteFruit(@PathVariable int id) {
-        fruitService.deleteFruit(id);
+        flowerService.deleteFlower(id);
         return ResponseEntity.ok("Fruit deleted");
     }
 
     @GetMapping("/getOne/{id}")
-    public ResponseEntity<Fruit> getFruitById(@PathVariable int id) {
-        Fruit fruit = fruitService.getFruitById(id);
-        return ResponseEntity.ok().body(fruit);
+    public ResponseEntity<FlowerDTO> getFruitById(@PathVariable int id) {
+        FlowerDTO flowerDTO = flowerService.getOneFlower(id);
+        return ResponseEntity.ok().body(flowerDTO);
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<Fruit>> getAllFruits() {
-        List<Fruit> fruits = fruitService.getAllFruits();
-        return ResponseEntity.ok(fruits);
+    public ResponseEntity<List<FlowerDTO>> getAllFruits() {
+        List<FlowerDTO> flowers = flowerService.getAllFlowers();
+        return ResponseEntity.ok(flowers);
     }
 
 }

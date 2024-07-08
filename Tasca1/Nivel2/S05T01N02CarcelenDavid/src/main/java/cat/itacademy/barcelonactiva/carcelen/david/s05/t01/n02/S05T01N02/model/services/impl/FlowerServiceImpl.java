@@ -6,9 +6,12 @@ import cat.itacademy.barcelonactiva.carcelen.david.s05.t01.n02.S05T01N02.model.d
 import cat.itacademy.barcelonactiva.carcelen.david.s05.t01.n02.S05T01N02.model.repository.FlowerRepo;
 import cat.itacademy.barcelonactiva.carcelen.david.s05.t01.n02.S05T01N02.model.services.FlowerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
+@Service
 public class FlowerServiceImpl implements FlowerService {
     @Autowired
     private FlowerRepo flowerRepo;
