@@ -1,9 +1,7 @@
 package cat.itacademy.barcelonactiva.carcelen.david.s05.t01.n02.S05T01N02.controllers;
 
-import cat.itacademy.barcelonactiva.carcelen.david.s05.t01.n02.S05T01N02.model.domain.Flower;
 import cat.itacademy.barcelonactiva.carcelen.david.s05.t01.n02.S05T01N02.model.dto.FlowerDTO;
 import cat.itacademy.barcelonactiva.carcelen.david.s05.t01.n02.S05T01N02.model.services.FlowerService;
-import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +14,7 @@ public class FlowerController {
 
     @Autowired
     private FlowerService flowerService;
-    @Operation(summary = "Add a list of flowers", description = "Adds a list of flower objects to the database")
+
     @PostMapping("/add")
     public ResponseEntity<String> addFlower(@RequestBody FlowerDTO flowerDTO) {
         flowerService.addFlower(flowerDTO);
@@ -38,7 +36,7 @@ public class FlowerController {
     @GetMapping("/getOne/{id}")
     public ResponseEntity<FlowerDTO> getFruitById(@PathVariable int id) {
         FlowerDTO flowerDTO = flowerService.getOneFlower(id);
-        return ResponseEntity.ok().body(flowerDTO);
+        return ResponseEntity.ok(flowerDTO);
     }
 
     @GetMapping("/getAll")
