@@ -16,16 +16,16 @@ public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
-    private int Die1;
-    private int Die2;
+    private int valueDie1;
+    private int valueDie2;
     private boolean win;
     private long idPlayer;
 
     public Game(long idPlayer) {
         this.idPlayer = idPlayer;
-        this.Die1 = new Random().nextInt(6) + 1;
-        this.Die2 = new Random().nextInt(6) + 1;
-        this.win = (this.Die1 + this.Die2) == 7;
+        this.valueDie1 = new Random().nextInt(6) + 1;
+        this.valueDie2 = new Random().nextInt(6) + 1;
+        this.win = (this.valueDie1 + this.valueDie2) == 7;
     }
 
 }
