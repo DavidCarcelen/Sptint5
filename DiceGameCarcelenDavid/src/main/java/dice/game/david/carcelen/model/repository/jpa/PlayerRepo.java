@@ -1,4 +1,4 @@
-package dice.game.david.carcelen.model.repository;
+package dice.game.david.carcelen.model.repository.jpa;
 
 import dice.game.david.carcelen.model.domain.Player;
 import dice.game.david.carcelen.model.dtos.PlayerDTO;

@@ -2,7 +2,7 @@ package dice.game.david.carcelen.model.services.impl;
 
 import dice.game.david.carcelen.model.domain.Game;
 import dice.game.david.carcelen.model.dtos.GameDTO;
-import dice.game.david.carcelen.model.repository.GameRepo;
+import dice.game.david.carcelen.model.repository.mongo.GameRepo;
 import dice.game.david.carcelen.model.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

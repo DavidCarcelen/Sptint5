@@ -1,4 +1,4 @@
-package dice.game.david.carcelen.model.repository;
+package dice.game.david.carcelen.model.repository.mongo;
 
 import dice.game.david.carcelen.model.domain.Game;
 import org.springframework.data.mongodb.repository.MongoRepository;
