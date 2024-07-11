@@ -1,6 +1,7 @@
 package dice.game.david.carcelen.model.services.impl;
 
 import dice.game.david.carcelen.exceptions.IdNotFoundException;
+import dice.game.david.carcelen.exceptions.NameNotAvailableException;
 import dice.game.david.carcelen.model.domain.Player;
 import dice.game.david.carcelen.model.dtos.PlayerDTO;
 import dice.game.david.carcelen.model.mappers.PlayerMapper;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,12 +24,14 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public void addPlayer(PlayerDTO playerDTO) {
+        checkName(playerDTO.getName());
         playerRepo.save(PlayerMapper.toEntity(playerDTO));
 
     }
 
     @Override
     public void updatePlayer(PlayerDTO playerDTO) {
+        checkName(playerDTO.getName());
         Player playerToUpdate = playerRepo.findById(playerDTO.getId())
                 .orElseThrow(() -> new IdNotFoundException("Player with ID " + playerDTO.getId() + " not found."));
         playerToUpdate.setName(playerDTO.getName());
@@ -61,5 +65,12 @@ public class PlayerServiceImpl implements PlayerService {
         return playerRepo.findAll().stream()
                 .map(PlayerMapper::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    private void checkName (String name){
+        Optional <Player> existingPlayer = playerRepo.findByName(name);
+        if (existingPlayer.isPresent()) {
+            throw new NameNotAvailableException("Name not available, try another name");
+        }
     }
 }

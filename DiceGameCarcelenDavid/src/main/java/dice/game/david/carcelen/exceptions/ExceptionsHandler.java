@@ -11,9 +11,18 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class ExceptionsHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(IdNotFoundException.class)
-    public ResponseEntity<String> FruitNotFoundException(IdNotFoundException e, WebRequest request) {
+    public ResponseEntity<String> handlerIdNotFoundException(IdNotFoundException e, WebRequest request) {
         String message = e.getMessage() + " " + request.getDescription(false);
 
         return new ResponseEntity<String>(message, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(NameNotAvailableException.class)
+    public ResponseEntity<String> handlerNameNotAvailableException(NameNotAvailableException e, WebRequest request) {
+        String message = e.getMessage() + " " + request.getDescription(false);
+
+        return new ResponseEntity<String>(message, HttpStatus.NOT_ACCEPTABLE);
+    }
+
+
 }
