@@ -27,7 +27,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void deleteGame(String id) {
+    public void deleteAllGames(String id) {
 
     }*/
 

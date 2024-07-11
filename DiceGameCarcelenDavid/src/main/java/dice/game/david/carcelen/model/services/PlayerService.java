@@ -10,4 +10,5 @@ public interface PlayerService {
     void deletePlayer(long id);
     PlayerDTO getOnePlayer(long id);
     List<PlayerDTO> getAllPlayers();
+    String getAverageRate(List<PlayerDTO> players);
 }

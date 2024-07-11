@@ -1,10 +1,13 @@
 package dice.game.david.carcelen.model.dtos;
 
 
+import dice.game.david.carcelen.model.domain.Game;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 public class PlayerDTO {
@@ -15,5 +18,11 @@ public class PlayerDTO {
 
     public PlayerDTO(String name) {
         this.name = name;
+    }
+
+    public void setWinRate(List<Game> games){
+        long totalGames = games.size();
+        long wins = games.stream().filter(Game::isWin).count();
+        this.winRate = totalGames == 0 ? 0 : (double) wins / totalGames * 100;
     }
 }

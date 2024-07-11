@@ -2,6 +2,7 @@ package dice.game.david.carcelen.model.services.impl;
 
 import dice.game.david.carcelen.exceptions.IdNotFoundException;
 import dice.game.david.carcelen.exceptions.NameNotAvailableException;
+import dice.game.david.carcelen.model.domain.Game;
 import dice.game.david.carcelen.model.domain.Player;
 import dice.game.david.carcelen.model.dtos.PlayerDTO;
 import dice.game.david.carcelen.model.mappers.PlayerMapper;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,9 +31,9 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public void updatePlayer(PlayerDTO playerDTO) {
-        checkName(playerDTO.getName());
         Player playerToUpdate = playerRepo.findById(playerDTO.getId())
                 .orElseThrow(() -> new IdNotFoundException("Player with ID " + playerDTO.getId() + " not found."));
+        checkName(playerDTO.getName());
         playerToUpdate.setName(playerDTO.getName());
         playerRepo.save(playerToUpdate);
 
@@ -50,27 +50,35 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public PlayerDTO getOnePlayer(long id) {
         Player player = playerRepo.findById(id).orElseThrow(() -> new IdNotFoundException("Player with ID " + id + " not found."));
-        PlayerDTO playerDTO = PlayerMapper.toDTO(player);
-
-        /*List<Game> games = gameRepo.findByIdPlayer(id);
-        long totalGames = games.size();
-        long wins = games.stream().filter(Game::isWin).count();
-        double winRate = totalGames == 0 ? 0 : (double) wins / totalGames * 100;
-        playerDTO.setWinRate(winRate);*/
-        return playerDTO;
+        List<Game> games = gameRepo.findByIdPlayer(id);
+        return PlayerMapper.toDTO(player, games);
     }
 
     @Override
     public List<PlayerDTO> getAllPlayers() {
         return playerRepo.findAll().stream()
-                .map(PlayerMapper::toDTO)
+                .map(player -> {
+                    List<Game> games = gameRepo.findByIdPlayer(player.getId());
+                    return PlayerMapper.toDTO(player, games);
+                })
                 .collect(Collectors.toList());
     }
 
-    private void checkName (String name){
-        Optional <Player> existingPlayer = playerRepo.findByName(name);
-        if (existingPlayer.isPresent()) {
-            throw new NameNotAvailableException("Name not available, try another name");
+
+    private void checkName(String name) {
+        if (!name.isBlank()) {
+            playerRepo.findByName(name).ifPresent(player -> {
+                throw new NameNotAvailableException("Name not available, try another name");
+            });
         }
     }
+    @Override
+    public String getAverageRate(List<PlayerDTO> players) {
+        double averageWinRate = players.stream()
+                .mapToDouble(PlayerDTO::getWinRate)
+                .average()
+                .orElse(0.0);
+        return String.format("Average Win Rate: %.2f", averageWinRate);
+    }
+
 }

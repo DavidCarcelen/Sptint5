@@ -45,5 +45,12 @@ public class PlayerController {
         return ResponseEntity.ok(players);
     }
 
+    @GetMapping("/getAverageRate")
+    public ResponseEntity<String> getAverageRate() {
+        List<PlayerDTO> players = playerService.getAllPlayers();
+        String result = playerService.getAverageRate(players);
+        return ResponseEntity.ok(result);
+    }
+
 
 }
