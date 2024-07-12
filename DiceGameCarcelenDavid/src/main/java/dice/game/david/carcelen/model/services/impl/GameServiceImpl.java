@@ -2,6 +2,7 @@ package dice.game.david.carcelen.model.services.impl;
 
 import dice.game.david.carcelen.model.domain.Game;
 import dice.game.david.carcelen.model.dtos.GameDTO;
+import dice.game.david.carcelen.model.mappers.GameMapper;
 import dice.game.david.carcelen.model.repository.mongo.GameRepo;
 import dice.game.david.carcelen.model.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +21,12 @@ public class GameServiceImpl implements GameService {
         gameRepo.save(game);
 
     }
-/*
+
     @Override
-    public void updateGame(GameDTO gameDTO) {
+    public void deleteAllGames(long id) {
+        gameRepo.deleteByIdPlayer(id);
 
     }
-
-    @Override
-    public void deleteAllGames(String id) {
-
-    }*/
 
     @Override
     public GameDTO getOneGame(String id) {
@@ -39,13 +36,7 @@ public class GameServiceImpl implements GameService {
     @Override
     public List<GameDTO> getAllGames(long idPlayer) {
         return gameRepo.findByIdPlayer(idPlayer).stream()
-                .map(game -> {
-                    GameDTO gameDTO = new GameDTO();
-                    gameDTO.setId(game.getId());
-                    gameDTO.setDie1(game.getValueDie1());
-                    gameDTO.setDie2(game.getValueDie2());
-                    gameDTO.setWin(game.isWin());
-                    return gameDTO;
-                }).collect(Collectors.toList());
+                .map(GameMapper::toDTO)
+                .collect(Collectors.toList());
     }
 }

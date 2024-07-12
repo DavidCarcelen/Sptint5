@@ -16,23 +16,20 @@ public class GameController {
     @Autowired
     private GameService gameService;
 
+    @Autowired PlayerService playerService;
+
     @PostMapping("/newGame/{id}")
     public ResponseEntity<String> newGame(@PathVariable long idPlayer) {
         gameService.newGame(idPlayer);
         return ResponseEntity.ok("game added");
     }
-    /*
-    @PutMapping("/update")
-    public ResponseEntity<String> updatePlayer(@RequestBody PlayerDTO playerDTO) {
-        playerService.updatePlayer(playerDTO);
-        return ResponseEntity.ok("player updated");
-    }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deletePlayer(@PathVariable int id) {
-        playerService.deletePlayer(id);
-        return ResponseEntity.ok("Player deleted");
-    }*/
+    public ResponseEntity<String> deleteAllGames(@PathVariable long id) {
+        gameService.deleteAllGames(id);
+        PlayerDTO playerDTO = playerService.getOnePlayer(id);
+        return ResponseEntity.ok("All games deleted for player: " + playerDTO.getName());
+    }
 
     @GetMapping("/getOneGame/{id}")
     public ResponseEntity<GameDTO> getGameById(@PathVariable String id) {

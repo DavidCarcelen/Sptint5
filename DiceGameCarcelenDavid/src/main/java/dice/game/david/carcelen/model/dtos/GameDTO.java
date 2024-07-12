@@ -8,8 +8,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class GameDTO implements Serializable {
     private String id;
-    private int Die1;
-    private int Die2;
+    private int valueDie1;
+    private int valueDie2;
     private boolean win;
     private long idPlayer;
 
