@@ -16,5 +16,5 @@ public class DiceGameCarcelenDavidApplication {
 
 }
 
-//games id null?
 //exception empty gamelist
+//Afegeix seguretat: inclou autenticació per JWT en  tots els accessos a les URL's del microservei.

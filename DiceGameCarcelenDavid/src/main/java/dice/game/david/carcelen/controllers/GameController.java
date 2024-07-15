@@ -20,8 +20,9 @@ public class GameController {
 
     @PostMapping("/newGame/{idPlayer}")
     public ResponseEntity<String> newGame(@PathVariable long idPlayer) {
-        gameService.newGame(idPlayer);
-        return ResponseEntity.ok("game added");
+        GameDTO gameDTO = gameService.newGame(idPlayer);
+        String result = gameDTO.isWin()?"You Win!!":"You lose.";
+        return ResponseEntity.ok(result + "\n " + gameDTO.getValueDie1() + " + " + gameDTO.getValueDie2());
     }
 
     @DeleteMapping("/deleteAllGames/{idPlayer}")

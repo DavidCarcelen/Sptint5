@@ -23,10 +23,11 @@ public class GameServiceImpl implements GameService {
     private PlayerRepo playerRepo;
 
     @Override
-    public void newGame(long idPlayer) {
+    public GameDTO newGame(long idPlayer) {
         checkPlayerId(idPlayer);
         Game game = new Game(idPlayer);
         gameRepo.save(game);
+        return GameMapper.toDTO(game);
 
     }
 
