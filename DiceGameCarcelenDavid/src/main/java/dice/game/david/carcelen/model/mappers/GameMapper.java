@@ -18,7 +18,7 @@ public class GameMapper {
         gameDTO.setValueDie1(game.getValueDie1());
         gameDTO.setValueDie2(game.getValueDie2());
         gameDTO.setWin(game.isWin());
-        gameDTO.setId(gameDTO.getId());
+        gameDTO.setId(game.getId());
         return gameDTO;
     }
 

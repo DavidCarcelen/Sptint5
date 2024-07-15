@@ -14,7 +14,6 @@ import java.util.Random;
 @NoArgsConstructor
 public class Game {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
     private int valueDie1;
     private int valueDie2;

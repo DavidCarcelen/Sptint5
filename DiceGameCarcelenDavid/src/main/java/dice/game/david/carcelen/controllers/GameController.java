@@ -18,16 +18,16 @@ public class GameController {
 
     @Autowired PlayerService playerService;
 
-    @PostMapping("/newGame/{id}")
+    @PostMapping("/newGame/{idPlayer}")
     public ResponseEntity<String> newGame(@PathVariable long idPlayer) {
         gameService.newGame(idPlayer);
         return ResponseEntity.ok("game added");
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteAllGames(@PathVariable long id) {
-        gameService.deleteAllGames(id);
-        PlayerDTO playerDTO = playerService.getOnePlayer(id);
+    @DeleteMapping("/deleteAllGames/{idPlayer}")
+    public ResponseEntity<String> deleteAllGames(@PathVariable long idPlayer) {
+        gameService.deleteAllGames(idPlayer);
+        PlayerDTO playerDTO = playerService.getOnePlayer(idPlayer);
         return ResponseEntity.ok("All games deleted for player: " + playerDTO.getName());
     }
 
@@ -37,7 +37,7 @@ public class GameController {
         return ResponseEntity.ok(gameDTO);
     }
 
-    @GetMapping("/getAllGames/{id}")
+    @GetMapping("/getAllGames/{idPlayer}")
     public ResponseEntity<List<GameDTO>> getAllGames(@PathVariable long idPlayer) {
         List<GameDTO> games = gameService.getAllGames(idPlayer);
         return ResponseEntity.ok(games);

@@ -15,3 +15,6 @@ public class DiceGameCarcelenDavidApplication {
 	}
 
 }
+
+//games id null?
+//exception empty gamelist

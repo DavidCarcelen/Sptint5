@@ -72,6 +72,7 @@ public class PlayerServiceImpl implements PlayerService {
             });
         }
     }
+
     @Override
     public String getAverageRate(List<PlayerDTO> players) {
         double averageWinRate = players.stream()
