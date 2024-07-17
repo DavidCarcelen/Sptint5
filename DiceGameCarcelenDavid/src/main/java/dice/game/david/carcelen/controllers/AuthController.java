@@ -3,6 +3,7 @@ package dice.game.david.carcelen.controllers;
 import dice.game.david.carcelen.dao.AuthResponse;
 import dice.game.david.carcelen.dao.AuthenticationRequest;
 import dice.game.david.carcelen.dao.RegisterRequest;
+import dice.game.david.carcelen.model.dtos.PlayerDTO;
 import dice.game.david.carcelen.model.services.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

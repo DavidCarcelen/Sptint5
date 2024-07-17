@@ -29,10 +29,14 @@ public class Player implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
     private String password;
+    private String email;
 
-    public Player(String name) {
+    public Player(String email, String password, String name) {
+        this.email= email;
+        this.password = password;
         this.name = name;
         this.signDate = new Date();
+        this.role = Role.USER;
 
     }
 

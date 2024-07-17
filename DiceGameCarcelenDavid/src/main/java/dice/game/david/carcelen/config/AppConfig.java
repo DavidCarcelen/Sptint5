@@ -11,18 +11,19 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @RequiredArgsConstructor
 public class AppConfig {
-    //@Autowired??
-    private PlayerRepo playerRepo;
+    //@Autowired
+    private final PlayerRepo playerRepo;
     @Bean
     public UserDetailsService userDetailsService(){
-        return username -> playerRepo.findByName(username)
-                .orElseThrow(()-> new IdNotFoundException("User Not Found"));
+        return username -> playerRepo.findByEmail(username)
+                .orElseThrow(()-> new UsernameNotFoundException("User Not Found"));
     }
     @Bean
     public AuthenticationProvider authenticationProvider(){

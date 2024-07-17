@@ -16,7 +16,8 @@ public class GameController {
     @Autowired
     private GameService gameService;
 
-    @Autowired PlayerService playerService;
+    @Autowired
+    private PlayerService playerService;
 
     @PostMapping("/newGame/{idPlayer}")
     public ResponseEntity<String> newGame(@PathVariable long idPlayer) {

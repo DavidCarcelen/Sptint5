@@ -5,14 +5,14 @@ import dice.game.david.carcelen.dao.AuthenticationRequest;
 import dice.game.david.carcelen.dao.RegisterRequest;
 import dice.game.david.carcelen.exceptions.NameNotAvailableException;
 import dice.game.david.carcelen.model.domain.Player;
-import dice.game.david.carcelen.model.domain.Role;
+import dice.game.david.carcelen.model.dtos.PlayerDTO;
+import dice.game.david.carcelen.model.mappers.PlayerMapper;
 import dice.game.david.carcelen.model.repository.jpa.PlayerRepo;
 import dice.game.david.carcelen.model.services.AuthService;
 import dice.game.david.carcelen.model.services.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,15 +32,26 @@ public class AuthServiceImpl implements AuthService {
         if (request.getPassword().isEmpty()) {
             throw new IllegalArgumentException("User password cannot be null");
         }
-        playerRepo.findByName(request.getName())
+        playerRepo.findByEmail(request.getEmail())
                 .ifPresent(user -> {
-                    throw new NameNotAvailableException("Name already registered:" + user.getName());
+                    throw new NameNotAvailableException("email already registered:" + user.getEmail());
                 });
-        Player player = Player.builder()
-                .name(request.getName())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER)
-                .build();
+        Player player = new Player(request.getEmail(), passwordEncoder.encode(request.getPassword()), request.getName());
+        playerRepo.save(player);
+        String jwToken = jwtService.generateToken(player);
+        return AuthResponse.builder().token(jwToken).build();
+    }
+
+
+    public AuthResponse registerdto(PlayerDTO playerDTO) {
+        if (playerDTO.getPassword().isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be null");
+        }
+        playerRepo.findByEmail(playerDTO.getEmail())
+                .ifPresent(player -> {
+                    throw new NameNotAvailableException("email already registered:" + player.getEmail());
+                });
+        Player player = PlayerMapper.toEntity(playerDTO);
         playerRepo.save(player);
         String jwToken = jwtService.generateToken(player);
         return AuthResponse.builder().token(jwToken).build();
@@ -49,9 +60,9 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthResponse authentication(AuthenticationRequest request) {
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getName(), request.getPassword()));
-        Player player = playerRepo.findByName(request.getName())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with name: " + request.getName()));
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        Player player = playerRepo.findByEmail(request.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + request.getEmail()));
         String jwt = jwtService.generateToken(player);
         return AuthResponse.builder().token(jwt).build();
     }
