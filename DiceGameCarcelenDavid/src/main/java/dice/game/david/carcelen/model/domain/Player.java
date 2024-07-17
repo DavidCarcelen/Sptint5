@@ -1,6 +1,9 @@
 package dice.game.david.carcelen.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +17,8 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class Player implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,12 +26,14 @@ public class Player implements UserDetails {
     @Temporal(TemporalType.DATE)
     private Date signDate;
     private String name;
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private Role role;
+    private String password;
 
     public Player(String name) {
         this.name = name;
         this.signDate = new Date();
+
     }
 
     @Override

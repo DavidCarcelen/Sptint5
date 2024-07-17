@@ -15,7 +15,7 @@ public class PlayerController {
     @Autowired
     private PlayerService playerService;
 
-    @PostMapping("/add")
+    @PostMapping("/add")//cambiar por dar de alta
     public ResponseEntity<String> addPlayer(@RequestBody PlayerDTO playerDTO) {
         playerService.addPlayer(playerDTO);
         return ResponseEntity.ok("player added");

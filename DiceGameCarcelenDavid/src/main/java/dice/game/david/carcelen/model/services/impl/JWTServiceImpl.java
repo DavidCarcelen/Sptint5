@@ -24,24 +24,24 @@ public class JWTServiceImpl implements JWTService {
         return getClaim(token, Claims::getSubject);
     }
 
-    @Override
+
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
 
         return Jwts.builder().setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
-
+    @Override
     public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(),userDetails);
     }
     @Override
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = getUserName(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
     public <T>  T getClaim(String token, Function<Claims,T> claimsResolver){
