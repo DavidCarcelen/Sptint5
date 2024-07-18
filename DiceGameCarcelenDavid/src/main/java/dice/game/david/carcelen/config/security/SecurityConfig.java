@@ -1,6 +1,7 @@
 package dice.game.david.carcelen.config.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -19,8 +20,9 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 @RequiredArgsConstructor
 @EnableMethodSecurity
 public class SecurityConfig {
-
+    @Autowired
     private JWTFilter jwtFilter;
+    @Autowired
     private AuthenticationProvider authenticationProvider;
 
     @Bean

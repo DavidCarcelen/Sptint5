@@ -36,6 +36,12 @@ public class AuthServiceImpl implements AuthService {
                 .ifPresent(user -> {
                     throw new NameNotAvailableException("email already registered:" + user.getEmail());
                 });
+        if (!request.getName().isBlank()){
+            playerRepo.findByName(request.getName())
+                    .ifPresent(user -> {
+                        throw new NameNotAvailableException("name not available:" + user.getName());
+                    });
+        }
         Player player = new Player(request.getEmail(), passwordEncoder.encode(request.getPassword()), request.getName());
         playerRepo.save(player);
         String jwToken = jwtService.generateToken(player);

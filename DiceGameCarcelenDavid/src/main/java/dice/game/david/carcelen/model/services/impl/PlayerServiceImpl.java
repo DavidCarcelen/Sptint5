@@ -69,7 +69,7 @@ public class PlayerServiceImpl implements PlayerService {
         PlayerDTO winner = null;
         for (PlayerDTO playerDTO : players) {
             playerDTO.setWinRate(gameRepo.findByIdPlayer(playerDTO.getId()));
-            if (playerDTO.getWinRate() < HighestWinrate) {
+            if (playerDTO.getWinRate() > HighestWinrate) {
                 HighestWinrate = playerDTO.getWinRate();
                 winner = playerDTO;
             }
