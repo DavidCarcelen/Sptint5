@@ -2,6 +2,7 @@ package dice.game.david.carcelen.model.services.impl;
 
 import dice.game.david.carcelen.exceptions.IdNotFoundException;
 import dice.game.david.carcelen.exceptions.NameNotAvailableException;
+import dice.game.david.carcelen.exceptions.PlayerNotFoundException;
 import dice.game.david.carcelen.model.domain.Game;
 import dice.game.david.carcelen.model.domain.Player;
 import dice.game.david.carcelen.model.dtos.PlayerDTO;
@@ -32,8 +33,7 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public void updatePlayer(PlayerDTO playerDTO) {
-        Player playerToUpdate = playerRepo.findById(playerDTO.getId())
-                .orElseThrow(() -> new IdNotFoundException("Player with ID " + playerDTO.getId() + " not found."));
+        Player playerToUpdate = playerRepo.findByEmail(playerDTO.getEmail()).orElseThrow(() -> new PlayerNotFoundException("Player with email " + playerDTO.getEmail() + " not found."));
         checkName(playerDTO.getName());
         playerToUpdate.setName(playerDTO.getName());
         playerRepo.save(playerToUpdate);
@@ -49,22 +49,49 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public PlayerDTO getOnePlayer(long id) {
-        Player player = playerRepo.findById(id).orElseThrow(() -> new IdNotFoundException("Player with ID " + id + " not found."));
-        List<Game> games = gameRepo.findByIdPlayer(id);
-        return PlayerMapper.toDTO(player, games);
+    public List<PlayerDTO> getAllPlayers() {
+        return playerRepo.findAll().stream().map(player -> {
+            List<Game> games = gameRepo.findByIdPlayer(player.getId());
+            return PlayerMapper.toDTO(player, games);
+        }).collect(Collectors.toList());
+    }
+
+
+    @Override
+    public String getAverageRate(List<PlayerDTO> players) {
+        double averageWinRate = players.stream().mapToDouble(PlayerDTO::getWinRate).average().orElse(0.0);
+        return String.format("Average Win Rate: %.2f", averageWinRate);
     }
 
     @Override
-    public List<PlayerDTO> getAllPlayers() {
-        return playerRepo.findAll().stream()
-                .map(player -> {
-                    List<Game> games = gameRepo.findByIdPlayer(player.getId());
-                    return PlayerMapper.toDTO(player, games);
-                })
-                .collect(Collectors.toList());
+    public PlayerDTO getWinner(List<PlayerDTO> players) {
+        double HighestWinrate = 0;
+        PlayerDTO winner = null;
+        for (PlayerDTO playerDTO : players) {
+            playerDTO.setWinRate(gameRepo.findByIdPlayer(playerDTO.getId()));
+            if (playerDTO.getWinRate() < HighestWinrate) {
+                HighestWinrate = playerDTO.getWinRate();
+                winner = playerDTO;
+            }
+
+        }
+        return winner;
     }
 
+    @Override
+    public PlayerDTO getLoser(List<PlayerDTO> players) {
+        double lowestWinRate = Double.MAX_VALUE;
+        PlayerDTO loser = null;
+        for (PlayerDTO playerDTO : players) {
+            playerDTO.setWinRate(gameRepo.findByIdPlayer(playerDTO.getId()));
+            if (playerDTO.getWinRate() < lowestWinRate) {
+                lowestWinRate = playerDTO.getWinRate();
+                loser = playerDTO;
+            }
+
+        }
+        return loser;
+    }
 
     private void checkName(String name) {
         if (!name.isBlank()) {
@@ -72,15 +99,6 @@ public class PlayerServiceImpl implements PlayerService {
                 throw new NameNotAvailableException("Name not available, try another name");
             });
         }
-    }
-
-    @Override
-    public String getAverageRate(List<PlayerDTO> players) {
-        double averageWinRate = players.stream()
-                .mapToDouble(PlayerDTO::getWinRate)
-                .average()
-                .orElse(0.0);
-        return String.format("Average Win Rate: %.2f", averageWinRate);
     }
 
 }

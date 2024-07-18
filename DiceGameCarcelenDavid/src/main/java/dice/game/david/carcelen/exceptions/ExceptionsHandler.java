@@ -24,5 +24,12 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<String>(message, HttpStatus.NOT_ACCEPTABLE);
     }
 
+    @ExceptionHandler(PlayerNotFoundException.class)
+    public ResponseEntity<String> handlerNameNotAvailableException(PlayerNotFoundException e, WebRequest request) {
+        String message = e.getMessage() + " " + request.getDescription(false);
+
+        return new ResponseEntity<String>(message, HttpStatus.NOT_FOUND);
+    }
+
 
 }

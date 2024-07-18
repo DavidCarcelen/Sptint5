@@ -10,18 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/player")
+@RequestMapping("/players")
 public class PlayerController {
     @Autowired
     private PlayerService playerService;
 
-    @PostMapping("/add")//cambiar por dar de alta
-    public ResponseEntity<String> addPlayer(@RequestBody PlayerDTO playerDTO) {
-        playerService.addPlayer(playerDTO);
-        return ResponseEntity.ok("player added");
-    }
-
-    @PutMapping("/update")
+    @PutMapping()
     public ResponseEntity<String> updatePlayer(@RequestBody PlayerDTO playerDTO) {
         playerService.updatePlayer(playerDTO);
         return ResponseEntity.ok("player updated");
@@ -33,13 +27,7 @@ public class PlayerController {
         return ResponseEntity.ok("Player deleted");
     }
 
-    @GetMapping("/getOne/{id}")
-    public ResponseEntity<PlayerDTO> getPlayerById(@PathVariable int id) {
-        PlayerDTO playerDTO = playerService.getOnePlayer(id);
-        return ResponseEntity.ok(playerDTO);
-    }
-
-    @GetMapping("/getAll")
+    @GetMapping()
     public ResponseEntity<List<PlayerDTO>> getAllPlayers() {
         List<PlayerDTO> players = playerService.getAllPlayers();
         return ResponseEntity.ok(players);
@@ -50,6 +38,20 @@ public class PlayerController {
         List<PlayerDTO> players = playerService.getAllPlayers();
         String result = playerService.getAverageRate(players);
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/ranking/winner")
+    public ResponseEntity<PlayerDTO> getWinner() {
+        List<PlayerDTO> players = playerService.getAllPlayers();
+        PlayerDTO winner = playerService.getWinner(players);
+        return ResponseEntity.ok(winner);
+    }
+
+    @GetMapping("/ranking/loser")
+    public ResponseEntity<PlayerDTO> getLoser() {
+        List<PlayerDTO> players = playerService.getAllPlayers();
+        PlayerDTO loser = playerService.getLoser(players);
+        return ResponseEntity.ok(loser);
     }
 
 

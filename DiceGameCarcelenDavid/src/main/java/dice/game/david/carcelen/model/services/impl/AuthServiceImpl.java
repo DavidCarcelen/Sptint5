@@ -43,20 +43,6 @@ public class AuthServiceImpl implements AuthService {
     }
 
 
-    public AuthResponse registerdto(PlayerDTO playerDTO) {
-        if (playerDTO.getPassword().isEmpty()) {
-            throw new IllegalArgumentException("Password cannot be null");
-        }
-        playerRepo.findByEmail(playerDTO.getEmail())
-                .ifPresent(player -> {
-                    throw new NameNotAvailableException("email already registered:" + player.getEmail());
-                });
-        Player player = PlayerMapper.toEntity(playerDTO);
-        playerRepo.save(player);
-        String jwToken = jwtService.generateToken(player);
-        return AuthResponse.builder().token(jwToken).build();
-    }
-
     @Override
     public AuthResponse authentication(AuthenticationRequest request) {
         authenticationManager.authenticate(

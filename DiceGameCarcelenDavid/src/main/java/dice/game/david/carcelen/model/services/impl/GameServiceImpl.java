@@ -39,12 +39,6 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public GameDTO getOneGame(String id) {
-        Game game = gameRepo.findById(id).orElseThrow(()-> new IdNotFoundException("ID not found"));
-        return GameMapper.toDTO(game);
-    }
-
-    @Override
     public List<GameDTO> getAllGames(long idPlayer) {
         checkPlayerId(idPlayer);
         return gameRepo.findByIdPlayer(idPlayer).stream()

@@ -8,7 +8,8 @@ public interface PlayerService {
     //void addPlayer(PlayerDTO playerDTO);
     void updatePlayer(PlayerDTO playerDTO);
     void deletePlayer(long id);
-    PlayerDTO getOnePlayer(long id);
     List<PlayerDTO> getAllPlayers();
     String getAverageRate(List<PlayerDTO> players);
+    PlayerDTO getWinner(List<PlayerDTO> players);
+    PlayerDTO getLoser(List<PlayerDTO> players);
 }

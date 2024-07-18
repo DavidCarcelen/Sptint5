@@ -16,11 +16,9 @@ public class PlayerDTO {
     private String name;
     private double winRate;
     private String email;
-    private String password;
 
-    public PlayerDTO(String email, String password, String name) {
+    public PlayerDTO(String email, String name) {
         this.email = email;
-        this.password = password;
         this.name = name;
     }
 

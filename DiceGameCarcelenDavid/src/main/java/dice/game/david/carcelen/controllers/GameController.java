@@ -1,5 +1,6 @@
 package dice.game.david.carcelen.controllers;
 
+import dice.game.david.carcelen.model.domain.Player;
 import dice.game.david.carcelen.model.dtos.GameDTO;
 import dice.game.david.carcelen.model.dtos.PlayerDTO;
 import dice.game.david.carcelen.model.services.GameService;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/games")
+@RequestMapping("/players")
 public class GameController {
     @Autowired
     private GameService gameService;
@@ -19,27 +20,21 @@ public class GameController {
     @Autowired
     private PlayerService playerService;
 
-    @PostMapping("/newGame/{idPlayer}")
+    @PostMapping("/{idPlayer}/games")
     public ResponseEntity<String> newGame(@PathVariable long idPlayer) {
         GameDTO gameDTO = gameService.newGame(idPlayer);
         String result = gameDTO.isWin()?"You Win!!":"You lose.";
         return ResponseEntity.ok(result + "\n " + gameDTO.getValueDie1() + " + " + gameDTO.getValueDie2());
     }
 
-    @DeleteMapping("/deleteAllGames/{idPlayer}")
+    @DeleteMapping("/{idPlayer}/games")
     public ResponseEntity<String> deleteAllGames(@PathVariable long idPlayer) {
         gameService.deleteAllGames(idPlayer);
-        PlayerDTO playerDTO = playerService.getOnePlayer(idPlayer);
-        return ResponseEntity.ok("All games deleted for player: " + playerDTO.getName());
+        return ResponseEntity.ok("All games deleted for player with id: " + idPlayer);
     }
 
-    @GetMapping("/getOneGame/{id}")
-    public ResponseEntity<GameDTO> getGameById(@PathVariable String id) {
-        GameDTO gameDTO = gameService.getOneGame(id);
-        return ResponseEntity.ok(gameDTO);
-    }
 
-    @GetMapping("/getAllGames/{idPlayer}")
+    @GetMapping("/{idPlayer}/games")
     public ResponseEntity<List<GameDTO>> getAllGames(@PathVariable long idPlayer) {
         List<GameDTO> games = gameService.getAllGames(idPlayer);
         return ResponseEntity.ok(games);

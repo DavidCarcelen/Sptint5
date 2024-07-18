@@ -9,6 +9,5 @@ public interface GameService {
     GameDTO newGame(long idPlayer);
    /* void updateGame(GameDTO gameDTO);*/
     void deleteAllGames(long id);
-    GameDTO getOneGame(String id);
     List<GameDTO> getAllGames(long idPlayer);
 }
