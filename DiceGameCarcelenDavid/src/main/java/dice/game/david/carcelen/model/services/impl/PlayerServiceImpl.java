@@ -23,14 +23,6 @@ public class PlayerServiceImpl implements PlayerService {
     @Autowired
     private GameRepo gameRepo;
 
-    /*
-    @Override
-    public void addPlayer(PlayerDTO playerDTO) {
-        checkName(playerDTO.getName());
-        playerRepo.save(PlayerMapper.toEntity(playerDTO));
-
-    }*/
-
     @Override
     public void updatePlayer(PlayerDTO playerDTO) {
         Player playerToUpdate = playerRepo.findByEmail(playerDTO.getEmail()).orElseThrow(() -> new PlayerNotFoundException("Player with email " + playerDTO.getEmail() + " not found."));

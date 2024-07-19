@@ -20,10 +20,9 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 @RequiredArgsConstructor
 @EnableMethodSecurity
 public class SecurityConfig {
-    @Autowired
-    private JWTFilter jwtFilter;
-    @Autowired
-    private AuthenticationProvider authenticationProvider;
+
+    private final JWTFilter jwtFilter;
+    private final AuthenticationProvider authenticationProvider;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {

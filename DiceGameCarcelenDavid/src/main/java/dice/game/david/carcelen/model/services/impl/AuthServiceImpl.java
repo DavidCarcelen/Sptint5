@@ -10,6 +10,7 @@ import dice.game.david.carcelen.model.mappers.PlayerMapper;
 import dice.game.david.carcelen.model.repository.jpa.PlayerRepo;
 import dice.game.david.carcelen.model.services.AuthService;
 import dice.game.david.carcelen.model.services.JWTService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,14 +19,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
-    @Autowired
-    private PlayerRepo playerRepo;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private JWTService jwtService;
-    private AuthenticationManager authenticationManager;
+    private final PlayerRepo playerRepo;
+    private final PasswordEncoder passwordEncoder;
+    private final JWTService jwtService;
+    private final AuthenticationManager authenticationManager;
 
     @Override
     public AuthResponse register(RegisterRequest request) {
