@@ -31,5 +31,12 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<String>(message, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(BadIdMatchException.class)
+    public ResponseEntity<String> handlerBadIdMatchException(BadIdMatchException e, WebRequest request) {
+        String message = e.getMessage() + " " + request.getDescription(false);
+
+        return new ResponseEntity<String>(message, HttpStatus.FORBIDDEN);
+    }
+
 
 }

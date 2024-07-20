@@ -51,10 +51,8 @@ public class AuthServiceImpl implements AuthService {
                 .signDate(new Date())
                 .role(Role.USER)
                 .build();
-        //Player player = new Player(request.getEmail(), passwordEncoder.encode(request.getPassword()), request.getName());
         playerRepo.save(player);
         String jwtToken = jwtService.generateToken(player);
-        //String jwToken = jwtService.generateToken(player);
         return AuthResponse.builder().token(jwtToken).build();
     }
 

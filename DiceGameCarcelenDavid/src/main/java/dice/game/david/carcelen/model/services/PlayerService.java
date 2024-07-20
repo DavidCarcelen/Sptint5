@@ -11,4 +11,5 @@ public interface PlayerService {
     String getAverageRate(List<PlayerDTO> players);
     PlayerDTO getWinner(List<PlayerDTO> players);
     PlayerDTO getLoser(List<PlayerDTO> players);
+
 }

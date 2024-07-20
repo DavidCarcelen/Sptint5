@@ -2,6 +2,7 @@ package dice.game.david.carcelen.controllers;
 
 import dice.game.david.carcelen.model.domain.Player;
 import dice.game.david.carcelen.model.dtos.PlayerDTO;
+import dice.game.david.carcelen.model.services.JWTService;
 import dice.game.david.carcelen.model.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,8 @@ import java.util.List;
 public class PlayerController {
     @Autowired
     private PlayerService playerService;
+    @Autowired
+    private JWTService jwtService;
 
     @PutMapping()
     public ResponseEntity<String> updatePlayer(@RequestBody PlayerDTO playerDTO) {
@@ -22,8 +25,9 @@ public class PlayerController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deletePlayer(@PathVariable int id) {
-        playerService.deletePlayer(id);
+    public ResponseEntity<String> deletePlayer(@PathVariable long idPlayer, @RequestHeader("Authorization") String authHeader) {
+        jwtService.checkId(idPlayer, authHeader);
+        playerService.deletePlayer(idPlayer);
         return ResponseEntity.ok("Player deleted");
     }
 

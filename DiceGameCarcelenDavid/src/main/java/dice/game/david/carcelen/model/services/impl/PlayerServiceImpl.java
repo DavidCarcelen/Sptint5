@@ -11,6 +11,7 @@ import dice.game.david.carcelen.model.repository.mongo.GameRepo;
 import dice.game.david.carcelen.model.repository.jpa.PlayerRepo;
 import dice.game.david.carcelen.model.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
