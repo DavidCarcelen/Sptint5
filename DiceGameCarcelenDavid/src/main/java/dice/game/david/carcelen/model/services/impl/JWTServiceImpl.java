@@ -33,7 +33,7 @@ public class JWTServiceImpl implements JWTService {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .signWith(getSigninKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
     @Override
@@ -54,13 +54,13 @@ public class JWTServiceImpl implements JWTService {
 
     private Claims getAllClaims(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(getSignInKey())
+                .setSigningKey(getSigninKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
     }
 
-    private Key getSignInKey() {
+    private Key getSigninKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }

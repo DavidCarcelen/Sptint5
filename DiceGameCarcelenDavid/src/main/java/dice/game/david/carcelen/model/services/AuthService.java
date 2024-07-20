@@ -8,5 +8,5 @@ import dice.game.david.carcelen.model.dtos.PlayerDTO;
 public interface AuthService {
     AuthResponse register(RegisterRequest request);
 
-    AuthResponse authentication(AuthenticationRequest request);
+    AuthResponse authenticate(AuthenticationRequest request);
 }

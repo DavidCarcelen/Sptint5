@@ -15,6 +15,3 @@ public class DiceGameCarcelenDavidApplication {
 	}
 
 }
-
-//devolucion register, forbidden?
-//retorno tokens
