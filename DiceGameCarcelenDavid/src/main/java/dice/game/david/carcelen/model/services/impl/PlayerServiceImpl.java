@@ -5,32 +5,65 @@ import dice.game.david.carcelen.exceptions.NameNotAvailableException;
 import dice.game.david.carcelen.exceptions.PlayerNotFoundException;
 import dice.game.david.carcelen.model.domain.Game;
 import dice.game.david.carcelen.model.domain.Player;
+import dice.game.david.carcelen.model.domain.Role;
 import dice.game.david.carcelen.model.dtos.PlayerDTO;
 import dice.game.david.carcelen.model.mappers.PlayerMapper;
 import dice.game.david.carcelen.model.repository.mongo.GameRepo;
 import dice.game.david.carcelen.model.repository.jpa.PlayerRepo;
 import dice.game.david.carcelen.model.services.PlayerService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class PlayerServiceImpl implements PlayerService {
-    @Autowired
-    private PlayerRepo playerRepo;
-    @Autowired
-    private GameRepo gameRepo;
+
+    private final PlayerRepo playerRepo;
+    private final GameRepo gameRepo;
+    private final PasswordEncoder passwordEncoder;
+
+    @Value("${admin.email}")
+    private String adminEmail;
+
+    @Value("${admin.password}")
+    private String adminPassword;
+
+    public PlayerServiceImpl(PlayerRepo playerRepo, GameRepo gameRepo, PasswordEncoder passwordEncoder) {
+        this.playerRepo = playerRepo;
+        this.gameRepo = gameRepo;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @PostConstruct
+    public synchronized void createAdminUserIfNotExists() {
+        Optional<Player> admin = playerRepo.findByEmail(adminEmail);
+
+        if (admin.isEmpty()) {
+            Player adminUser = Player.builder()
+                    .email(adminEmail)
+                    .name("admin")
+                    .password(passwordEncoder.encode(adminPassword))
+                    .role(Role.ADMIN)
+                    .signDate(new Date())
+                    .build();
+
+            playerRepo.save(adminUser);
+        }
+    }
 
     @Override
     public void updatePlayer(PlayerDTO playerDTO) {
-        Player playerToUpdate = playerRepo.findByEmail(playerDTO.getEmail()).orElseThrow(() -> new PlayerNotFoundException("Player with email " + playerDTO.getEmail() + " not found."));
+        Player playerToUpdate = playerRepo.findByEmail(playerDTO.getEmail())
+                .orElseThrow(() -> new PlayerNotFoundException("Player with email " + playerDTO.getEmail() + " not found."));
         checkName(playerDTO.getName());
         playerToUpdate.setName(playerDTO.getName());
         playerRepo.save(playerToUpdate);
-
     }
 
     @Override
@@ -49,7 +82,6 @@ public class PlayerServiceImpl implements PlayerService {
         }).collect(Collectors.toList());
     }
 
-
     @Override
     public String getAverageRate(List<PlayerDTO> players) {
         double averageWinRate = players.stream().mapToDouble(PlayerDTO::getWinRate).average().orElse(0.0);
@@ -58,15 +90,14 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public PlayerDTO getWinner(List<PlayerDTO> players) {
-        double HighestWinrate = 0;
+        double highestWinRate = 0;
         PlayerDTO winner = null;
         for (PlayerDTO playerDTO : players) {
             playerDTO.setWinRate(gameRepo.findByIdPlayer(playerDTO.getId()));
-            if (playerDTO.getWinRate() > HighestWinrate) {
-                HighestWinrate = playerDTO.getWinRate();
+            if (playerDTO.getWinRate() > highestWinRate) {
+                highestWinRate = playerDTO.getWinRate();
                 winner = playerDTO;
             }
-
         }
         return winner;
     }
@@ -81,7 +112,6 @@ public class PlayerServiceImpl implements PlayerService {
                 lowestWinRate = playerDTO.getWinRate();
                 loser = playerDTO;
             }
-
         }
         return loser;
     }
@@ -93,5 +123,4 @@ public class PlayerServiceImpl implements PlayerService {
             });
         }
     }
-
 }
