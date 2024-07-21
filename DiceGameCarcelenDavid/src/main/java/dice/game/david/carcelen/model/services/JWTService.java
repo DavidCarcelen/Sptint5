@@ -12,6 +12,7 @@ public interface JWTService {
 
     boolean isTokenValid(String token, UserDetails userDetails);
     void checkId(long id, String token);
+    String getRoleFromToken(String token);
 
 
 }
