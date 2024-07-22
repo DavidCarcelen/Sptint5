@@ -1,8 +1,20 @@
-# Dice Game - David Carcelen
+# Dice Game
 
 ## Description
 
-This project is a dice game developed with Spring Boot, using JWT for user authentication and authorization. The game allows users to register, log in, and play dice. Additionally, there are user and admin roles that control access to certain endpoints.
+This project is a dice game developed with Spring Boot, using JWT for user authentication and authorization. 
+The game allows users to register, log in, and play dice. 
+Additionally, there are user and admin roles that control access to certain endpoints.
+
+## About
+
+This game is played with two dice, if the sum of the two dice equals 7, the game is won, otherwise, it is lost.
+To play the game and make a roll, a user must register with a unique email and player name.
+If the user chooses not to add a name, they will be called "ANONYMOUS".
+Upon registration, each user is assigned a unique ID and a registration date.
+Each player can see a list of all the rolls they have made, including the value of each roll.
+Players cannot delete specific games but can delete their entire list of rolls.
+The app allows listing all players in the system and provides the average success percentage of all players, best percentage player and worst.
 
 ## Features
 
@@ -14,37 +26,26 @@ This project is a dice game developed with Spring Boot, using JWT for user authe
 ## Prerequisites
 
 - Java 17 or higher.
-- Maven or Gradle.
+- Maven.
 - MySQL.
 - MongoDB.
 
-## Configuration
+## Usage
+### Public Endpoints
+POST /api/auth/register: Register a new user.
+POST /api/auth/login: Log in and obtain a JWT token.
 
-### Environment Variables
+### Admin Endpoints
+These endpoints require a valid JWT token with admin role.
 
-Set the following environment variables in your `application.properties` or `application.yml`:
+GET /players/admin/all: Get a list of all players.
+POST /players/admin/getAverageRate: Get the average win rate of all players
 
-```properties
-spring.application.name=DiceGameCarcelenDavid
+All other endpoints require a valid jwt and non-admin players can only use their ID as a path param.
 
-# SQL connection properties
-spring.datasource.url=jdbc:mysql://localhost:3306/diceGame
-spring.datasource.username=root
-spring.datasource.password=
-spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+## Contact
+David Carcelen - davidcarcelengenova@gmail.com
 
-# MongoDB connection properties
-spring.data.mongodb.uri=mongodb://localhost:27017/diceGame
+Project Link: https://github.com/DavidCarcelen/Sptint5/tree/main/DiceGameCarcelenDavid
 
-# JWT secret key
-jwt.secret=YourSecretKeyHere
 
-# Server configuration
-server.port=9006
-
-# Admin credentials
-admin.email=admin@admin.com
-admin.password=admin
