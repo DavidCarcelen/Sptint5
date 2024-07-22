@@ -22,7 +22,7 @@ public class PlayerController {
     @PutMapping("/users/{idPlayer}")
     public ResponseEntity<String> updatePlayer(@PathVariable long idPlayer, @RequestBody PlayerDTO playerDTO, @RequestHeader("Authorization") String authHeader) {
         jwtService.checkId(idPlayer, authHeader);
-        playerService.updatePlayer(playerDTO);
+        playerService.updatePlayer(idPlayer, playerDTO);
         return ResponseEntity.ok("player updated");
     }
 

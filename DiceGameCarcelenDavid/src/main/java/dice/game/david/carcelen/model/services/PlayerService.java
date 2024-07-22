@@ -5,9 +5,9 @@ import dice.game.david.carcelen.model.dtos.PlayerDTO;
 import java.util.List;
 
 public interface PlayerService {
-    void updatePlayer(PlayerDTO playerDTO);
+    void updatePlayer(long idPlayer, PlayerDTO playerDTO);
 
-    void deletePlayer(long id);
+    void deletePlayer(long idPlayer);
 
     List<PlayerDTO> getAllPlayers();
 

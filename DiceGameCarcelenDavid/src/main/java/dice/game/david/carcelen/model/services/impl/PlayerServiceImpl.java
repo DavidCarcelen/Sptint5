@@ -60,9 +60,13 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public void updatePlayer(PlayerDTO playerDTO) {
-        Player playerToUpdate = playerRepo.findByEmail(playerDTO.getEmail())
-                .orElseThrow(() -> new PlayerNotFoundException("Player with email " + playerDTO.getEmail() + " not found."));
+    public void updatePlayer(long idPlayer, PlayerDTO playerDTO) {
+
+        Player playerToUpdate = playerRepo.findById(idPlayer)
+                .orElseThrow(() -> new IdNotFoundException("Player with ID " + idPlayer + " not found."));
+        if(!playerToUpdate.getEmail().equals(playerDTO.getEmail())){
+            throw new BadIdMatchException("Can't update other players. ");
+        }
         checkName(playerDTO.getName());
         playerToUpdate.setName(playerDTO.getName());
         playerRepo.save(playerToUpdate);

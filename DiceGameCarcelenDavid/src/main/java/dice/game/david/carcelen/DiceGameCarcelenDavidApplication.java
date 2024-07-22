@@ -15,15 +15,4 @@ public class DiceGameCarcelenDavidApplication {
     }
 
 }
-/*Pruebas Unitarias:
-Pruebas enfocadas en métodos individuales dentro de las clases.
-Se utilizan mocks para aislar el método en prueba.
 
-Pruebas de Integración:
-Pruebas que verifican la integración de múltiples componentes, como controladores y servicios.
-
-Pruebas de Contrato con Pact:
-Pruebas que aseguran que el consumidor de un servicio y el proveedor del servicio tienen un
-entendimiento común de las interacciones*/
-
-//readme
