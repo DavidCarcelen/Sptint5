@@ -38,7 +38,7 @@ public class AuthServiceImpl implements AuthService {
                 .ifPresent(user -> {
                     throw new NameNotAvailableException("email already registered:" + user.getEmail());
                 });
-        if (!request.getName().isBlank()){
+        if (!request.getName().isBlank()) {
             playerRepo.findByName(request.getName())
                     .ifPresent(user -> {
                         throw new NameNotAvailableException("name not available:" + user.getName());

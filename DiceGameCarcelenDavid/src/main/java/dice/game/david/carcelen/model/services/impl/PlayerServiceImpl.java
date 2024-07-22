@@ -1,5 +1,6 @@
 package dice.game.david.carcelen.model.services.impl;
 
+import dice.game.david.carcelen.exceptions.BadIdMatchException;
 import dice.game.david.carcelen.exceptions.IdNotFoundException;
 import dice.game.david.carcelen.exceptions.NameNotAvailableException;
 import dice.game.david.carcelen.exceptions.PlayerNotFoundException;
@@ -10,6 +11,7 @@ import dice.game.david.carcelen.model.dtos.PlayerDTO;
 import dice.game.david.carcelen.model.mappers.PlayerMapper;
 import dice.game.david.carcelen.model.repository.mongo.GameRepo;
 import dice.game.david.carcelen.model.repository.jpa.PlayerRepo;
+import dice.game.david.carcelen.model.services.JWTService;
 import dice.game.david.carcelen.model.services.PlayerService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;

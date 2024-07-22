@@ -22,7 +22,7 @@ public class PlayerDTO {
         this.name = name;
     }
 
-    public void setWinRate(List<Game> games){
+    public void setWinRate(List<Game> games) {
         long totalGames = games.size();
         long wins = games.stream().filter(Game::isWin).count();
         this.winRate = totalGames == 0 ? 0 : (double) wins / totalGames * 100;

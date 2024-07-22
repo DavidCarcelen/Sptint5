@@ -10,8 +10,8 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories(basePackages = "dice.game.david.carcelen.model.repository.mongo")
 public class DiceGameCarcelenDavidApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(DiceGameCarcelenDavidApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(DiceGameCarcelenDavidApplication.class, args);
+    }
 
 }

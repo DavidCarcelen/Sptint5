@@ -28,11 +28,11 @@ public class GameController {
     public ResponseEntity<String> newGame(@PathVariable long idPlayer, @RequestHeader("Authorization") String authHeader) {
         jwtService.checkId(idPlayer, authHeader);
         GameDTO gameDTO = gameService.newGame(idPlayer);
-        String result = gameDTO.isWin()?"You Win!!":"You lose.";
+        String result = gameDTO.isWin() ? "You Win!!" : "You lose.";
         return ResponseEntity.ok(result + "\n " + gameDTO.getValueDie1() + " + " + gameDTO.getValueDie2());
     }
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("admin/{idPlayer}/games")
+
+    @DeleteMapping("users/{idPlayer}/games")
     public ResponseEntity<String> deleteAllGames(@PathVariable long idPlayer, @RequestHeader("Authorization") String authHeader) {
         jwtService.checkId(idPlayer, authHeader);
         gameService.deleteAllGames(idPlayer);

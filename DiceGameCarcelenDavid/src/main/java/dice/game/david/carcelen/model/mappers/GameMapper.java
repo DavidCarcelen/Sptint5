@@ -9,11 +9,11 @@ import java.util.List;
 
 public class GameMapper {
 
-    public static Game toEntity (GameDTO gameDTO){
+    public static Game toEntity(GameDTO gameDTO) {
         return new Game(gameDTO.getIdPlayer());
     }
 
-    public static GameDTO toDTO (Game game){
+    public static GameDTO toDTO(Game game) {
         GameDTO gameDTO = new GameDTO(game.getIdPlayer());
         gameDTO.setValueDie1(game.getValueDie1());
         gameDTO.setValueDie2(game.getValueDie2());

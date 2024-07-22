@@ -19,24 +19,27 @@ public class PlayerController {
     @Autowired
     private JWTService jwtService;
 
-    @PutMapping("/users")
-    public ResponseEntity<String> updatePlayer(@RequestBody PlayerDTO playerDTO) {
+    @PutMapping("/users/{idPlayer}")
+    public ResponseEntity<String> updatePlayer(@PathVariable long idPlayer, @RequestBody PlayerDTO playerDTO, @RequestHeader("Authorization") String authHeader) {
+        jwtService.checkId(idPlayer, authHeader);
         playerService.updatePlayer(playerDTO);
         return ResponseEntity.ok("player updated");
     }
 
-    @DeleteMapping("/users/delete/{id}")
+    @DeleteMapping("/users/delete/{idPlayer}")
     public ResponseEntity<String> deletePlayer(@PathVariable long idPlayer, @RequestHeader("Authorization") String authHeader) {
         jwtService.checkId(idPlayer, authHeader);
         playerService.deletePlayer(idPlayer);
         return ResponseEntity.ok("Player deleted");
     }
+
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin")
     public ResponseEntity<List<PlayerDTO>> getAllPlayers() {
         List<PlayerDTO> players = playerService.getAllPlayers();
         return ResponseEntity.ok(players);
     }
+
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/getAverageRate")
     public ResponseEntity<String> getAverageRate() {

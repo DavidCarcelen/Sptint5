@@ -46,7 +46,7 @@ public class GameServiceImpl implements GameService {
                 .collect(Collectors.toList());
     }
 
-    private void checkPlayerId (long idPlayer){
-        playerRepo.findById(idPlayer).orElseThrow(()-> new IdNotFoundException("Player not found with id " + idPlayer));
+    private void checkPlayerId(long idPlayer) {
+        playerRepo.findById(idPlayer).orElseThrow(() -> new IdNotFoundException("Player not found with id " + idPlayer));
     }
 }

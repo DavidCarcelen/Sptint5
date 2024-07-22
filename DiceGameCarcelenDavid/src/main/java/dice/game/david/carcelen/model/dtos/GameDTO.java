@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+
 @Data
 @NoArgsConstructor
 public class GameDTO implements Serializable {
@@ -13,7 +14,7 @@ public class GameDTO implements Serializable {
     private boolean win;
     private long idPlayer;
 
-    public GameDTO(long idPlayer){
+    public GameDTO(long idPlayer) {
         this.idPlayer = idPlayer;
     }
 }

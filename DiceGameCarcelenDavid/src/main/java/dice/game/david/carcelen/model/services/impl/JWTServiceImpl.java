@@ -54,15 +54,16 @@ public class JWTServiceImpl implements JWTService {
 
     @Override
     public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(),userDetails);
+        return generateToken(new HashMap<>(), userDetails);
     }
+
     @Override
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = getUserName(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    public <T>  T getClaim(String token, Function<Claims,T> claimsResolver){
+    public <T> T getClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = getAllClaims(token);
         return claimsResolver.apply(claims);
 
@@ -81,24 +82,28 @@ public class JWTServiceImpl implements JWTService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    private boolean isTokenExpired (String token){
+    private boolean isTokenExpired(String token) {
         return getExpiration(token).before(new Date());
     }
 
-    private Date getExpiration (String token){
+    private Date getExpiration(String token) {
         return getClaim(token, Claims::getExpiration);
     }
 
     @Override
-    public void checkId(long idPlayer, String authHeader){
+    public void checkId(long idPlayer, String authHeader) {
         String token = authHeader.substring(7);
-        String userEmail = getUserName(token);
-        Optional<Player> repoPlayer = playerRepo.findById(idPlayer);
-        if (repoPlayer.isEmpty() || !userEmail.equals(repoPlayer.get().getEmail()) ) {
-            throw new BadIdMatchException("Forbidden: Can't access to other players ID");
+        String role = getRoleFromToken(token);
+        if (!role.equals("ROLE_ADMIN")) {
+            String userEmail = getUserName(token);
+            Optional<Player> repoPlayer = playerRepo.findById(idPlayer);
+            if (repoPlayer.isEmpty() || !userEmail.equals(repoPlayer.get().getEmail())) {
+                throw new BadIdMatchException("Forbidden: Can't access to other players ID");
+            }
         }
 
     }
+
     @Override
     public String getRoleFromToken(String token) {
         return getClaim(token, claims -> claims.get("role", String.class));
