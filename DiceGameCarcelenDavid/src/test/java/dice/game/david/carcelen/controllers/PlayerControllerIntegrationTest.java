@@ -56,7 +56,7 @@ class PlayerControllerIntegrationTest {
     @BeforeEach
     void setUp() {
         player = Player.builder()
-                .id(1L)
+                .id(1)
                 .email("test@example.com")
                 .name("Test Player")
                 .password("password")
@@ -65,7 +65,7 @@ class PlayerControllerIntegrationTest {
                 .build();
 
         playerDTO = new PlayerDTO();
-        playerDTO.setId(1L);
+        playerDTO.setId(1);
         playerDTO.setEmail("test@example.com");
         playerDTO.setName("Updated Player");
 
@@ -77,7 +77,7 @@ class PlayerControllerIntegrationTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void updatePlayer() throws Exception {
         String token = "Bearer token";
-        mockMvc.perform(put("/players/users/{idPlayer}", 1L)
+        mockMvc.perform(put("/players/users/{idPlayer}", 1)
                         .header(HttpHeaders.AUTHORIZATION, token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"id\":1,\"email\":\"test@example.com\",\"name\":\"Updated Player\"}"))
@@ -85,7 +85,7 @@ class PlayerControllerIntegrationTest {
                 .andExpect(content().string("player updated"));
 
         verify(jwtService, times(1)).checkId(anyLong(), anyString());
-        verify(playerService, times(1)).updatePlayer(any(PlayerDTO.class));
+        verify(playerService, times(1)).updatePlayer(1,any(PlayerDTO.class));
 
     }
 
@@ -94,7 +94,7 @@ class PlayerControllerIntegrationTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void deletePlayer() throws Exception {
         String token = "Bearer token";
-        mockMvc.perform(delete("/players/users/delete/{idPlayer}", 1L)
+        mockMvc.perform(delete("/players/users/delete/{idPlayer}", 1)
                         .header(HttpHeaders.AUTHORIZATION, token))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Player deleted"));

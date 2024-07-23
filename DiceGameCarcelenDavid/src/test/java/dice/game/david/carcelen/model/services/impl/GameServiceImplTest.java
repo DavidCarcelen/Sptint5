@@ -39,7 +39,7 @@ class GameServiceImplTest {
     @BeforeEach
     void setUp() {
         player = Player.builder()
-                .id(1L)
+                .id(1)
                 .email("test@example.com")
                 .name("Test Player")
                 .build();

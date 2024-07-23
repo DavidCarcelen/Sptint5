@@ -42,7 +42,7 @@ class PlayerServiceImplTest {
     @BeforeEach
     void setUp() {
         player = Player.builder()
-                .id(1L)
+                .id(1)
                 .email("test@example.com")
                 .name("Test Player")
                 .role(Role.USER)
@@ -50,7 +50,7 @@ class PlayerServiceImplTest {
                 .build();
 
         playerDTO = new PlayerDTO();
-        playerDTO.setId(1L);
+        playerDTO.setId(1);
         playerDTO.setEmail("test@example.com");
         playerDTO.setName("Updated Player");
 
@@ -58,7 +58,7 @@ class PlayerServiceImplTest {
         games = new ArrayList<>();
         Game game1 = new Game();
         game1.setId("1");
-        game1.setIdPlayer(1L);
+        game1.setIdPlayer(1);
         game1.setValueDie1(3);
         game1.setValueDie2(4);
         game1.setWin(true);
@@ -66,7 +66,7 @@ class PlayerServiceImplTest {
 
         Game game2 = new Game();
         game2.setId("2");
-        game2.setIdPlayer(1L);
+        game2.setIdPlayer(1);
         game2.setValueDie1(2);
         game2.setValueDie2(3);
         game2.setWin(false);
@@ -74,7 +74,7 @@ class PlayerServiceImplTest {
 
         Game game3 = new Game();
         game3.setId("3");
-        game3.setIdPlayer(1L);
+        game3.setIdPlayer(1);
         game3.setValueDie1(5);
         game3.setValueDie2(2);
         game3.setWin(true);
@@ -113,7 +113,7 @@ class PlayerServiceImplTest {
     void deletePlayer() {
         when(playerRepo.existsById(anyLong())).thenReturn(true);
 
-        playerService.deletePlayer(1L);
+        playerService.deletePlayer(1);
 
         verify(playerRepo, times(1)).deleteById(anyLong());
     }
@@ -123,7 +123,7 @@ class PlayerServiceImplTest {
         when(playerRepo.existsById(anyLong())).thenReturn(false);
 
         assertThrows(IdNotFoundException.class, () -> {
-            playerService.deletePlayer(1L);
+            playerService.deletePlayer(1);
         });
     }
 
@@ -157,21 +157,21 @@ class PlayerServiceImplTest {
         games = Arrays.asList(
                 new Game() {{
                     setId("4");
-                    setIdPlayer(1L);
+                    setIdPlayer(1);
                     setValueDie1(1);
                     setValueDie2(1);
                     setWin(false);
                 }},
                 new Game() {{
                     setId("5");
-                    setIdPlayer(1L);
+                    setIdPlayer(1);
                     setValueDie1(2);
                     setValueDie2(2);
                     setWin(false);
                 }},
                 new Game() {{
                     setId("6");
-                    setIdPlayer(1L);
+                    setIdPlayer(1);
                     setValueDie1(3);
                     setValueDie2(3);
                     setWin(false);
